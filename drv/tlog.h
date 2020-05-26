@@ -1,5 +1,12 @@
 #pragma once
 
+#ifdef HOST
+
+#define TLOG_TP()
+#define TLOG_PRINTF(fmt, ...)
+
+#else
+
 #include <stdint.h>
 
 void tlog_init(char *buf);
@@ -14,5 +21,4 @@ uint16_t tlog_timestamp(void);
 
 #define TLOG_PRINTF(fmt, ...) tlog_printf(fmt, __VA_ARGS__)
 
-//#define TLOG_TP()
-//#define TLOG_PRINTF(fmt, ...)
+#endif

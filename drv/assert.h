@@ -57,3 +57,6 @@ void sos(const char *message, uint16_t code);
 
 #define STATIC_ASSERT(cond) \
     STATIC_ASSERT_IMPL2(cond, __LINE__)
+
+#define STATIC_ASSERT_STRUCT_OFFSET(type, field, offset) \
+    STATIC_ASSERT((uint8_t *)(&((type *)NULL)->field) == (uint8_t*)offset);

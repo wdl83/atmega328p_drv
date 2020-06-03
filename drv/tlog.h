@@ -8,6 +8,7 @@
 #else
 
 #include <stdint.h>
+#include <inttypes.h>
 
 void tlog_init(char *buf);
 void tlog_printf(const char *, ...);

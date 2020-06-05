@@ -8,6 +8,8 @@
 #if defined ASSERT_DISABLE || defined HOST
 
 #define ASSERT(cond)
+#define STATIC_ASSERT(cond)
+#define STATIC_ASSERT_STRUCT_OFFSET(type, field, offset)
 
 #else /* ASSERT_DISABLE */
 
@@ -44,7 +46,6 @@ void sos(const char *message, uint16_t code);
             SREG = sreg; \
         } \
     } while(0)
-#endif /* ASSERT_DISABLE */
 
 #define STATIC_ASSERT_MSG(cond, msg) \
     typedef char static_assert_##msg[2 * !!(cond) - 1]
@@ -60,3 +61,5 @@ void sos(const char *message, uint16_t code);
 
 #define STATIC_ASSERT_STRUCT_OFFSET(type, field, offset) \
     STATIC_ASSERT((uint8_t *)(&((type *)NULL)->field) == (uint8_t*)offset);
+
+#endif /* ASSERT_DISABLE */

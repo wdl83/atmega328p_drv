@@ -1,7 +1,8 @@
 #pragma once
 
-#ifdef HOST
+#ifdef TLOG_DISABLE
 
+#define TLOG_INIT(buf)
 #define TLOG_TP()
 #define TLOG_PRINTF(fmt, ...)
 
@@ -18,8 +19,8 @@ const char *tlog_end(void);
 void tlog_dump(void);
 uint16_t tlog_timestamp(void);
 
+#define TLOG_INIT(buf) tlog_init(buf)
 #define TLOG_TP() tlog_printf("%s:%d", __TLOG_FILE__, __LINE__)
-
 #define TLOG_PRINTF(fmt, ...) tlog_printf(fmt, __VA_ARGS__)
 
 #endif

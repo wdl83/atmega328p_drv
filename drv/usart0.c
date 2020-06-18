@@ -312,6 +312,31 @@ ISR(USART_TX_vect)
     if(NULL != complete_cb) (*complete_cb)(user_data);
 }
 /*----------------------------------------------------------------------------*/
+#ifdef USART0_RX_NO_BUFFERING
+
+ISR(USART_RX_vect)
+{
+#ifdef USART_DBG_CNTRS
+    ++rx0_cntrs_.int_cntr;
+#endif /* USART_DBG_CNTRS */
+    /*------------------------------------------------------------------------*/
+    /* non-buffering continuous async mode */
+    ASSERT(NULL == rx0_.end);
+    ASSERT(NULL == rx0_.next);
+    ASSERT(NULL == rx0_.pred_cb);
+    ASSERT(NULL == rx0_.complete_cb);
+    ASSERT(NULL != rx0_.recv_cb);
+
+#ifdef USART_DBG_CNTRS
+        ++rx0_cntrs_.byte_cntr;
+#endif /* USART_DBG_CNTRS */
+
+        rx0_flags_.fop_errors = USART0_FOP_ERRORS();
+        (*rx0_.recv_cb)(USART0_RD(), rx0_flags_, rx0_.user_data);
+}
+
+#else  /* USART0_RX_NO_BUFFERING */
+
 ISR(USART_RX_vect)
 {
 #ifdef USART_DBG_CNTRS
@@ -373,4 +398,5 @@ ISR(USART_RX_vect)
         rx_complete();
     }
 }
+#endif /* USART0_RX_NO_BUFFERING */
 /*----------------------------------------------------------------------------*/

@@ -17,7 +17,6 @@ void tlog_clear(void);
 const char *tlog_begin(void);
 const char *tlog_end(void);
 void tlog_dump(void);
-uint16_t tlog_timestamp(void);
 
 #define TLOG_INIT(buf) tlog_init(buf)
 #define TLOG_TP() tlog_printf("%s:%d", __TLOG_FILE__, __LINE__)

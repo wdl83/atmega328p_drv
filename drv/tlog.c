@@ -12,7 +12,6 @@ typedef struct
     const char *end;
     char *cur;
     uint8_t cntr;
-    uint16_t timestamp;
 } tlog_t;
 
 tlog_t tlog_;
@@ -30,14 +29,6 @@ void tlog_printf(const char *fmt, ...)
     int len = 0;
     const uint8_t sreg = SREG;
     cli();
-    const uint16_t timestamp = tlog_timestamp();
-#if 0
-    uint16_t diff =
-        timestamp > tlog_.timestamp
-        ? timestamp - tlog_.timestamp
-        : tlog_.timestamp - timestamp;
-#endif
-
     va_start(ap, fmt);
 retry_index:
     len =
@@ -74,7 +65,6 @@ retry_data:
 exit:
     va_end(ap);
     ++tlog_.cntr;
-    tlog_.timestamp = timestamp;
     SREG = sreg;
 }
 

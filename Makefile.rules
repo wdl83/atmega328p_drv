@@ -1,0 +1,28 @@
+LDFLAGS += -Wl,-M=$(TARGET).map
+
+OBJS = $(CSRCS:.c=.o) 
+OBJS += $(ASMSRCS:.S=.o)
+
+TARGETS = $(TARGET).elf $(TARGET).bin $(TARGET).lst $(TARGET).hex
+all:: $(TARGETS)
+
+%.elf: $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^
+
+#.PRECIOUS: %.o
+
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<  -D__TLOG_FILE__=\"$(shell basename $<)\"
+
+%.o: %.S
+	$(AS) $(ASMFLAGS) $<  -o $@
+
+%.lst: $(TARGET).elf
+	$(OBJDUMP) -htS $< > $@
+
+%.hex: $(TARGET).elf
+	$(OBJCOPY) --output-target=ihex $(OBJCPFLAGS) $< $*.hex
+
+%.bin: $(TARGET).elf $(TARGET).hex
+	$(OBJCOPY) $(OBJCPFLAGS) $< $*.bin
+	$(SIZE) -C --mcu=$(MCU) $<

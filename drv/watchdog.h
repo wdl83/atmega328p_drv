@@ -6,17 +6,17 @@
 
 #include <drv/mem.h>
 
-#define WATCHDOG_TIMEOUT_16ms UINT8_C(0) /* WDP[3..0] = 0 */
-#define WATCHDOG_TIMEOUT_32ms UINT8_C(M1(WDP0))
-#define WATCHDOG_TIMEOUT_64ms UINT8_C(M1(WDP1))
-#define WATCHDOG_TIMEOUT_125ms UINT8_C(M2(WDP1, WDP0))
-#define WATCHDOG_TIMEOUT_250ms UINT8_C(M1(WDP2))
-#define WATCHDOG_TIMEOUT_500ms UINT8_C(M2(WDP2, WDP0))
-#define WATCHDOG_TIMEOUT_1000ms UINT8_C(M2(WDP2, WDP1))
-#define WATCHDOG_TIMEOUT_2000ms UINT8_C(M3(WDP2, WDP1, WDP0))
-#define WATCHDOG_TIMEOUT_4000ms UINT8_C(M1(WDP3))
-#define WATCHDOG_TIMEOUT_8000ms UINT8_C(M2(WDP3, WDP0))
+#define WATCHDOG_TIMEOUT_16ms WDTO_15MS
+#define WATCHDOG_TIMEOUT_32ms WDTO_30MS
+#define WATCHDOG_TIMEOUT_64ms WDTO_60MS
+#define WATCHDOG_TIMEOUT_125ms WDTO_120MS
+#define WATCHDOG_TIMEOUT_250ms WDTO_250MS
+#define WATCHDOG_TIMEOUT_500ms WDTO_500MS
+#define WATCHDOG_TIMEOUT_1000ms WDTO_1S
+#define WATCHDOG_TIMEOUT_2000ms WDTO_2S
+#define WATCHDOG_TIMEOUT_4000ms WDTO_4S
+#define WATCHDOG_TIMEOUT_8000ms WDTO_8S
 
-void watchdog_enable(uint8_t timeout);
-void watchdog_disable(void);
+#define watchdog_enable(timeout) wdt_enable(timeout)
+#define watchdog_disable() wdt_disable()
 #define watchdog_reset() wdt_reset()

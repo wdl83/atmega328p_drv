@@ -5,21 +5,61 @@
 #define TLOG_INIT(buf)
 #define TLOG_TP()
 #define TLOG_PRINTF(fmt, ...)
+#define TLOG_XPRINT8(str, value)
+#define TLOG_XPRINT16(str, value)
 
 #else
 
-#include <stdint.h>
 #include <inttypes.h>
+#include <stdint.h>
+#include <string.h>
+
+#include <drv/util.h>
 
 void tlog_init(char *buf);
+void tlog_append(const char *, size_t);
 void tlog_printf(const char *, ...);
 void tlog_clear(void);
 const char *tlog_begin(void);
 const char *tlog_end(void);
 void tlog_dump(void);
 
+#define TO_STRING_IMPL(x) #x
+#define TO_STRING(x) TO_STRING_IMPL(x)
+
 #define TLOG_INIT(buf) tlog_init(buf)
-#define TLOG_TP() tlog_printf("%s:%d", __TLOG_FILE__, __LINE__)
+
+#define TLOG_TP() \
+    do \
+    { \
+        char buf__[14 /* file */ + 1 + /* : */ + 4 /* line */ + 1 /* \n */] = {0}; \
+        char *curr__ = scopy(buf__, __TLOG_FILE__, 14); \
+        *curr__++ = ':'; \
+        curr__ = xprint16(curr__, (uint16_t)__LINE__); \
+        *curr__++ = '\n'; \
+        tlog_append(buf__, curr__ - buf__); \
+    } while(0);
+
 #define TLOG_PRINTF(fmt, ...) tlog_printf(fmt, __VA_ARGS__)
+
+#define TLOG_XPRINT8(str, value) \
+    do \
+    { \
+        char buf__[17 /* str */ + 2 /* value */ + 1 /* \n */] = {0}; \
+        char *curr__ = scopy(buf__, (str), 17); \
+        curr__ = xprint8(curr__, (uint8_t)(value)); \
+        *curr__++ = '\n'; \
+        tlog_append(buf__, curr__ - buf__); \
+    } while(0);
+
+#define TLOG_XPRINT16(str, value) \
+    do \
+    { \
+        char buf__[15 /* str */ + 4 /* value */ + 1 /* \n */] = {0}; \
+        char *curr__ = scopy(buf__, (str), 15); \
+        curr__ = xprint16(curr__, (uint16_t)(value)); \
+        *curr__++ = '\n'; \
+        tlog_append(buf__, curr__ - buf__); \
+    } while(0);
 
 #endif

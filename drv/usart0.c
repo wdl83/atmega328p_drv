@@ -1,19 +1,12 @@
 #include <string.h>
 
 #include <avr/interrupt.h>
-
 #include <avr/pgmspace.h>
+
 #include <drv/assert.h>
 #include <drv/usart0.h>
+#include <drv/util.h>
 
-/*----------------------------------------------------------------------------*/
-static
-const char lookup16[] PROGMEM =
-{
-    '0', '1', '2', '3', '4',
-    '5', '6', '7', '8', '9',
-    'A', 'B', 'C', 'D', 'E', 'F'
-};
 /*----------------------------------------------------------------------------*/
 #ifdef USART_DBG_CNTRS
 void usart_cntrs_str(usart_cntrs_str_t str, const usart_cntrs_t *cntrs)
@@ -22,14 +15,10 @@ void usart_cntrs_str(usart_cntrs_str_t str, const usart_cntrs_t *cntrs)
         NULL == str
         || NULL == cntrs) return;
 
-    uint8_t i = 0;
-
-    str[i++] = pgm_read_byte(lookup16 + (cntrs->byte_cntr >> 4));
-    str[i++] = pgm_read_byte(lookup16 + (UINT8_C(0xF) & cntrs->byte_cntr));
-    str[i++] = pgm_read_byte(lookup16 + (cntrs->int_cntr >> 4));
-    str[i++] = pgm_read_byte(lookup16 + (UINT8_C(0xF) & cntrs->int_cntr));
-    str[i++] = '\n';
-    str[i++] = '\0';
+    str = xprint8(str, cntrs->byte_cntr);
+    str = xprint8(str, cntrs->int_cntr);
+    *str++ = '\n';
+    *str = '\0';
 }
 #endif /* USART_DBG_CNTRS */
 /*----------------------------------------------------------------------------*/

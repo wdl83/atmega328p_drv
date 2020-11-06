@@ -43,4 +43,4 @@ LDFLAGS = -mmcu=$(MCU) \
 		  -Wl,-relax \
 		  -Wl,--cref
 
-OBJCPFLAGS = -j .text -j .rodata -j .data -j .softregs -j .bss -j .vectors
+OBJCPFLAGS = -j .text -j .fixed -j .mdata -j .bss

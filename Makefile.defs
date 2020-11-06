@@ -11,36 +11,45 @@ MCU=atmega328p
 CPU_CLK=16000000
 APP_FLASH_ADDR=x0000
 BOOTLOADER_FLASH_ADDR=0x7000
+# avstack.pl needs to be placed in PATH
+AVSTACK=avstack.pl
 
 ASMFLAGS = -mmcu=$(MCU)
 
 #-save-temps
 CFLAGS = \
-	--short-enums \
-	-DCPU_CLK=$(CPU_CLK) \
-	-Os \
-	-Wall \
-	-Wextra \
-	-Wno-parentheses \
-	-Wno-unused-parameter \
-	-Wpacked \
-	-Wpadded \
-	-Wshadow \
-	-Wunreachable-code \
-	-fdata-sections \
-	-ffreestanding \
-	-ffunction-sections \
-	-fomit-frame-pointer \
-	-flto \
-	-g \
-	-mmcu=$(MCU) \
-	-std=gnu99
+		 --short-enums \
+		 -DCPU_CLK=$(CPU_CLK) \
+		 -Os \
+		 -Wall \
+		 -Wextra \
+		 -Wno-parentheses \
+		 -Wno-unused-parameter \
+		 -Wpacked \
+		 -Wpadded \
+		 -Wshadow \
+		 -Wunreachable-code \
+		 -fdata-sections \
+		 -ffreestanding \
+		 -ffunction-sections \
+		 -fomit-frame-pointer \
+		 -g \
+		 -mmcu=$(MCU) \
+		 -std=gnu99
 
-#CFLAGS += -fstack-usage
 
-LDFLAGS = -mmcu=$(MCU) \
+LDFLAGS = \
+		  -mmcu=$(MCU) \
 		  -Wl,-gc-sections \
 		  -Wl,-relax \
 		  -Wl,--cref
 
 OBJCPFLAGS = -j .text -j .fixed -j .mdata -j .bss
+
+ifdef STACK_USAGE
+	CFLAGS += \
+			  -fstack-usage
+else
+	CFLAGS += \
+			  -flto
+endif

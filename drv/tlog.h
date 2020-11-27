@@ -8,6 +8,8 @@
 #define TLOG_XPRINT8(str, value)
 #define TLOG_XPRINT16(str, value)
 
+#define TLOG_XPRINT2x8(str, value1, value2)
+
 #else
 
 #include <inttypes.h>
@@ -32,8 +34,8 @@ void tlog_dump(void);
 #define TLOG_TP() \
     do \
     { \
-        char buf__[14 /* file */ + 1 + /* : */ + 4 /* line */ + 1 /* \n */] = {0}; \
-        char *curr__ = scopy(buf__, __TLOG_FILE__, 14); \
+        char buf__[20 /* file */ + 1 + /* : */ + 4 /* line */ + 1 /* \n */] = {0}; \
+        char *curr__ = scopy(buf__, __TLOG_FILE__, 20); \
         *curr__++ = ':'; \
         curr__ = xprint16(curr__, (uint16_t)__LINE__); \
         *curr__++ = '\n'; \
@@ -61,5 +63,7 @@ void tlog_dump(void);
         *curr__++ = '\n'; \
         tlog_append(buf__, curr__ - buf__); \
     } while(0);
+
+#define TLOG_XPRINT2x8(str, value1, value2) TLOG_XPRINT16((str), ((uint16_t)(value1) << 8) | (value2))
 
 #endif

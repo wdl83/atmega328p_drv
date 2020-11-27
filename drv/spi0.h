@@ -27,16 +27,22 @@
 #define SPI0_CLK_DIV_16() SPCR = (SPCR & ~M1(SPR1)) | M1(SPR0)
 #define SPI0_CLK_DIV_64() SPCR = M1(SPR1) | (SPCR & ~M1(SPR0))
 #define SPI0_CLK_DIV_128() SPCR |= M2(SPR1, SPR0)
+#define SPI0_CLK_SCALE() (SPCR & M2(SPR1, SPR0))
 
 /* SPSR - SPI Status Register */
-#define SPI0_CLK_x2() SPISR |= M1(SPI2X)
-#define SPI0_INT_STATUS() (SPISR & M1(SPIF))
-#define SPI0_COLISION_STATUS() (SPISR & M1(WCOL))
+#define SPI0_CLK_x2() SPSR |= M1(SPI2X)
+#define SPI0_INT_STATUS() (SPSR & M1(SPIF))
+#define SPI0_COLISION_STATUS() (SPSR & M1(WCOL))
 
 /* SPDR - SPI Data Register */
 #define SPI0_WR(value) SPDR = (value)
 #define SPI0_RD() SPDR
 
+#define SPI0_COMPLETE() SPI0_INT_STATUS()
 
+void spi0_xchg(uint8_t *begin, const uint8_t *const end);
+
+#ifdef SPI0_ISR_ENABLE
 typedef void (*spi_complete_cb_t)(uintptr_t);
 void spi0_complete_cb(spi_complete_cb_t, uintptr_t);
+#endif

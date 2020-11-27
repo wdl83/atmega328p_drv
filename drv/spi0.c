@@ -8,6 +8,22 @@
 
 #include <drv/usart0.h>
 
+
+void spi0_xchg(uint8_t *begin, const uint8_t *const end)
+{
+    while(begin != end)
+    {
+        SPI0_WR(*begin);
+
+        while(!SPI0_COMPLETE()) {}
+
+        *begin = SPI0_RD();
+        ++begin;
+    }
+}
+
+#ifdef SPI0_ISR_ENABLE
+
 typedef struct
 {
     spi_complete_cb_t complete_cb;
@@ -26,6 +42,7 @@ void spi0_complete_cb(spi_complete_cb_t complete_cb, uintptr_t user_data)
 /* SPI Serial Transfer Complete */
 ISR(SPI_STC_vect)
 {
-    ASSERT(ctrl0_.complete_cb);
     (*ctrl0_.complete_cb)(ctrl0_.user_data);
 }
+
+#endif /* SPI0_ISR_ENABLE */

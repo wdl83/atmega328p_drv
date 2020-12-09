@@ -13,7 +13,6 @@ endif
 all:: $(TARGETS)
 	echo $(TARGETS)
 
-
 %.elf: $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
 

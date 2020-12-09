@@ -54,7 +54,7 @@ void tlog_append(const char *begin, size_t len)
 
     SREG = sreg;
 }
-
+#if 0
 void tlog_printf(const char *fmt, ...)
 {
     va_list ap;
@@ -98,6 +98,7 @@ exit:
     ++tlog_.cntr;
     SREG = sreg;
 }
+#endif
 
 void tlog_clear(void)
 {

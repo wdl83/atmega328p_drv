@@ -4,7 +4,6 @@
 
 #define TLOG_INIT(buf)
 #define TLOG_TP()
-#define TLOG_PRINTF(fmt, ...)
 #define TLOG_XPRINT8(str, value)
 #define TLOG_XPRINT16(str, value)
 
@@ -41,8 +40,6 @@ void tlog_dump(void);
         *curr__++ = '\n'; \
         tlog_append(buf__, curr__ - buf__); \
     } while(0);
-
-#define TLOG_PRINTF(fmt, ...) tlog_printf(fmt, __VA_ARGS__)
 
 #define TLOG_XPRINT8(str, value) \
     do \

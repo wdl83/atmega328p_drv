@@ -1,6 +1,8 @@
 #include <avr/io.h>
 #include <util/delay_basic.h>
 
+#include <hw.h>
+
 #include <drv/assert.h>
 #include <drv/mem.h>
 #include <drv/tlog.h>
@@ -8,6 +10,38 @@
 #include <drv/usart0.h>
 
 #include <stdio.h>
+
+static hw_info_t hw_info_;
+
+hw_info_t hw_info()
+{
+    return hw_info_;
+}
+
+void hw_init(uint8_t raw)
+{
+    hw_info_.value = raw;
+}
+
+/* PB5: RED LED */
+void dbg_led_on(void)
+{
+    if(0 == (DDRB & M1(DDB5))) DDRB |= M1(DDB5);
+    PORTB |= M1(DDB5);
+}
+
+void dbg_led_off(void)
+{
+
+    if(0 == (DDRB & M1(DDB5))) DDRB |= M1(DDB5);
+    PORTB &= ~M1(DDB5);
+}
+
+void dbg_led_toggle(void)
+{
+    if(0 == (DDRB & M1(DDB5))) DDRB |= M1(DDB5);
+    PORTB ^= M1(DDB5);
+}
 
 static
 void wait(uint8_t cntr)
@@ -63,24 +97,4 @@ void tlog_dump(void)
 uint16_t tlog_timestamp(void)
 {
     return TMR1_RD16_CNTR();
-}
-
-/* PB5: RED LED */
-void dbg_led_on(void)
-{
-    if(0 == (DDRB & M1(DDB5))) DDRB |= M1(DDB5);
-    PORTB |= M1(DDB5);
-}
-
-void dbg_led_off(void)
-{
-
-    if(0 == (DDRB & M1(DDB5))) DDRB |= M1(DDB5);
-    PORTB &= ~M1(DDB5);
-}
-
-void dbg_led_toggle(void)
-{
-    if(0 == (DDRB & M1(DDB5))) DDRB |= M1(DDB5);
-    PORTB ^= M1(DDB5);
 }

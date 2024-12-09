@@ -17,7 +17,7 @@
 
 #include <drv/util.h>
 
-void tlog_init(char *buf);
+void tlog_init(char *buf, size_t capacity);
 void tlog_append(const char *, size_t);
 void tlog_printf(const char *, ...);
 void tlog_clear(void);

@@ -18,10 +18,10 @@ typedef struct
 
 tlog_t tlog_;
 
-void tlog_init(char *buf)
+void tlog_init(char *buf, size_t capacity)
 {
     tlog_.begin = buf;
-    tlog_.end = tlog_.begin + TLOG_SIZE - 1;
+    tlog_.end = tlog_.begin + capacity - 1;
     tlog_.cur = tlog_.begin;
 }
 
@@ -29,8 +29,9 @@ void tlog_append(const char *begin, size_t len)
 {
     /* cntr is appended as HEX + 1 space char */
     const uint8_t prefix_len = (sizeof(tlog_.cntr) << 1) + 1;
+    const size_t max_size = tlog_.end - tlog_.begin;
 
-    if(TLOG_SIZE < len + prefix_len) return;
+    if(max_size < len + prefix_len) return;
 
     const uint8_t sreg = SREG;
     cli();
@@ -57,6 +58,7 @@ void tlog_append(const char *begin, size_t len)
 #if 0
 void tlog_printf(const char *fmt, ...)
 {
+    const size_t max_size = tlog_.end - tlog_.begin;
     va_list ap;
     int len = 0;
     const uint8_t sreg = SREG;
@@ -83,7 +85,7 @@ retry_index:
 retry_data:
     len = vsnprintf(tlog_.cur, tlog_.end - tlog_.cur, fmt, ap);
 
-    if(TLOG_SIZE < len) goto exit;
+    if(max_size < len) goto exit;
 
     if(tlog_.end - tlog_.cur < len)
     {

@@ -1,0 +1,27 @@
+OBJS = $(CSRCS:.c=.o)
+OBJS += $(ASMSRCS:.s=.o)
+DST_OBJS = $(addprefix $(OBJ_DIR)/, $(OBJS))
+
+DST_TARGET = $(OBJ_DIR)/$(TARGET)
+
+.PRECIOUS: $(OBJ_DIR)/%.o
+
+all:: $(DST_OBJS) $(DST_TARGET)
+
+$(OBJ_DIR)/%.a: $(DST_OBJS)
+	$(AR) $(ARFLAGS) $@ $^
+
+$(OBJ_DIR)/%.o: %.c
+	mkdir -p "$(OBJ_DIR)/`dirname $<`"
+	$(CC) $(CFLAGS) -o $@ -c $<  -D__TLOG_FILE__=\"$(shell basename $< .c)\"
+
+$(OBJ_DIR)/%.o: %.s
+	mkdir -p "$(OBJ_DIR)/`dirname $<`"
+	$(AS) $(ASMFLAGS) -o $@ -c $<
+
+clean:
+	rm $(DST_OBJS) $(DST_TARGET) -f
+
+install: $(DST_TARGET)
+	mkdir -p $(DST_DIR)
+	mv $(DST_TARGET) $(DST_DIR)

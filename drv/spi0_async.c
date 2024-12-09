@@ -61,13 +61,12 @@ ISR(SPI_STC_vect)
 
         if(ctrl0_.begin == ctrl0_.end)
         {
-            spi_flags_t flags = ctrl0_.flags;
             spi_complete_cb_t complete_cb = ctrl0_.complete_cb;
             const uintptr_t user_data = ctrl0_.user_data;
 
             memset(&ctrl0_, 0, sizeof(ctrl_t));
 
-            if(NULL != complete_cb) (*complete_cb)(&flags, user_data);
+            if(NULL != complete_cb) (*complete_cb)(user_data);
         }
     }
 }

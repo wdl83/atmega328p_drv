@@ -47,3 +47,12 @@ $(OBJ_DIR)/%.hex: $(OBJ_DIR)/$(TARGET).elf
 $(OBJ_DIR)/%.bin: $(OBJ_DIR)/$(TARGET).elf
 	$(OBJCOPY) $(OBJCPFLAGS) $< $@
 	$(SIZE) -C --mcu=$(MCU) $<
+
+write_flash: $(OBJ_DIR)/$(TARGET).hex
+	avrdude -p atmega328p -P usb -c dragon_isp -U flash:w:$<
+
+read_eeprom:
+	avrdude -p atmega328p -P usb -c dragon_isp -U eeprom:r:eeprom.hex:i
+
+read_flash:
+	avrdude -p atmega328p -P usb -c dragon_isp -U flash:r:flash.hex:i

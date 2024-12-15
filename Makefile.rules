@@ -56,3 +56,6 @@ read_eeprom:
 
 read_flash:
 	avrdude -p atmega328p -P usb -c dragon_isp -U flash:r:flash.hex:i
+
+read_fuses:
+	avrdude -p atmega328p -P usb -c dragon_isp -U lfuse:r:-:h -U hfuse:r:-:h -U efuse:r:-:h

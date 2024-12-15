@@ -2,7 +2,7 @@
 
 #ifdef TLOG_DISABLE
 
-#define TLOG_INIT(buf)
+#define TLOG_INIT(buf, size)
 #define TLOG_TP()
 #define TLOG_XPRINT8(str, value)
 #define TLOG_XPRINT16(str, value)
@@ -28,7 +28,7 @@ void tlog_dump(void);
 #define TO_STRING_IMPL(x) #x
 #define TO_STRING(x) TO_STRING_IMPL(x)
 
-#define TLOG_INIT(buf) tlog_init(buf)
+#define TLOG_INIT(buf, size) tlog_init(buf, size)
 
 #define TLOG_TP() \
     do \

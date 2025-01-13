@@ -18,38 +18,37 @@ ASMFLAGS = -mmcu=$(MCU)
 
 #-save-temps
 CFLAGS = \
-		 --short-enums \
-		 -DCPU_CLK=$(CPU_CLK) \
-		 -Os \
-		 -Wall \
-		 -Wextra \
-		 -Wno-parentheses \
-		 -Wno-unused-parameter \
-		 -Wpacked \
-		 -Wpadded \
-		 -Wshadow \
-		 -Wunreachable-code \
-		 -fdata-sections \
-		 -ffreestanding \
-		 -ffunction-sections \
-		 -fomit-frame-pointer \
-		 -g \
-		 -mmcu=$(MCU) \
-		 -std=gnu99
-
+	--short-enums \
+	-DCPU_CLK=$(CPU_CLK) \
+	-Os \
+	-Wall \
+	-Wextra \
+	-Wno-parentheses \
+	-Wno-unused-parameter \
+	-Wpacked \
+	-Wpadded \
+	-Wshadow \
+	-Wunreachable-code \
+	-fdata-sections \
+	-ffreestanding \
+	-ffunction-sections \
+	-fomit-frame-pointer \
+	-g \
+	-mmcu=$(MCU) \
+	-std=gnu99
 
 LDFLAGS = \
-		  -mmcu=$(MCU) \
-		  -Wl,-gc-sections \
-		  -Wl,-relax \
-		  -Wl,--cref
+	-Wl,--cref \
+	-Wl,-gc-sections \
+	-Wl,-relax \
+	-mmcu=$(MCU)
 
 OBJCPFLAGS = -j .text -j .fixed -j .mdata -j .bss
 
 ifdef STACK_USAGE
 	CFLAGS += \
-			  -fstack-usage
+		-fstack-usage
 else
 	CFLAGS += \
-			  -flto
+		-flto
 endif

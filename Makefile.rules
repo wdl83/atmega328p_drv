@@ -46,7 +46,7 @@ $(OBJ_DIR)/%.hex: $(OBJ_DIR)/$(TARGET).elf
 
 $(OBJ_DIR)/%.bin: $(OBJ_DIR)/$(TARGET).elf
 	$(OBJCOPY) $(OBJCPFLAGS) $< $@
-	$(SIZE) -C --mcu=$(MCU) $<
+	$(SIZE) --format=avr --mcu=$(MCU) $<
 
 write_flash: $(OBJ_DIR)/$(TARGET).hex
 	avrdude -p atmega328p -P usb -c dragon_isp -U flash:w:$<

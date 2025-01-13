@@ -1,11 +1,11 @@
 #include <stdarg.h>
 #include <stddef.h>
-#include <stdio.h>
+//#include <stdio.h>
 
 #include <avr/interrupt.h>
 
-#include <drv/tlog.h>
-#include <drv/util.h>
+#include "tlog.h"
+#include "util.h"
 
 
 typedef struct

@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <drv/util.h>
+#include "util.h"
 
 void tlog_init(char *buf, size_t capacity);
 void tlog_append(const char *, size_t);

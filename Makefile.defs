@@ -1,16 +1,15 @@
-TOOLS_PREFIX=avr-
-
-CC=$(TOOLS_PREFIX)gcc
-AS=$(TOOLS_PREFIX)as
-AR=$(TOOLS_PREFIX)ar
-LD=$(TOOLS_PREFIX)ld
-OBJCOPY=$(TOOLS_PREFIX)objcopy
-OBJDUMP=$(TOOLS_PREFIX)objdump
-SIZE=$(TOOLS_PREFIX)size
+CC=avr-gcc
+AS=avr-as
+AR=avr-ar
+LD=avr-ld
+OBJCOPY=avr-objcopy
+OBJDUMP=avr-objdump
+SIZE=avr-size
 MCU=atmega328p
 CPU_CLK=16000000
-APP_FLASH_ADDR=x0000
-BOOTLOADER_FLASH_ADDR=0x7000
+# check avrdude manual for supported programmers
+# AVR DRAGON https://www.microchip.com/en-us/development-tool/atavrdragon
+AVRDUDE_PROGRAMMER ?= dragon_isp
 # avstack.pl needs to be placed in PATH
 AVSTACK=avstack.pl
 
@@ -43,7 +42,7 @@ LDFLAGS = \
 	-Wl,-relax \
 	-mmcu=$(MCU)
 
-OBJCPFLAGS = -j .text -j .fixed -j .mdata -j .bss
+OBJCPFLAGS = -j .text -j .fixed -j .data -j .bss
 
 ifdef STACK_USAGE
 	CFLAGS += \

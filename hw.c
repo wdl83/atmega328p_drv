@@ -23,6 +23,8 @@ void hw_init(uint8_t raw)
     hw_info_.value = raw;
 }
 
+#ifndef ASSERT_DISABLE
+
 /* PB5: RED LED */
 void dbg_led_on(void)
 {
@@ -98,3 +100,5 @@ uint16_t tlog_timestamp(void)
 {
     return TMR1_RD16_CNTR();
 }
+
+#endif /* ASSERT_DISABLE */

@@ -49,13 +49,20 @@ $(OBJ_DIR)/%.bin: $(OBJ_DIR)/$(TARGET).elf
 	$(SIZE) --format=avr --mcu=$(MCU) $<
 
 write_flash: $(OBJ_DIR)/$(TARGET).hex
-	avrdude -p atmega328p -P usb -c dragon_isp -U flash:w:$<
+	avrdude -p atmega328p -P usb -c $(AVRDUDE_PROGRAMMER) -U flash:w:$<
 
 read_eeprom:
-	avrdude -p atmega328p -P usb -c dragon_isp -U eeprom:r:eeprom.hex:i
+	avrdude -p atmega328p -P usb -c $(AVRDUDE_PROGRAMMER) -U eeprom:r:eeprom.hex:i
 
 read_flash:
-	avrdude -p atmega328p -P usb -c dragon_isp -U flash:r:flash.hex:i
+	avrdude -p atmega328p -P usb -c $(AVRDUDE_PROGRAMMER) -U flash:r:flash.hex:i
 
 read_fuses:
-	avrdude -p atmega328p -P usb -c dragon_isp -U lfuse:r:-:h -U hfuse:r:-:h -U efuse:r:-:h
+	avrdude -p atmega328p -P usb -c $(AVRDUDE_PROGRAMMER) -U lfuse:r:-:h -U hfuse:r:-:h -U efuse:r:-:h
+
+write_default_16MHz_fuses:
+	avrdude -p atmega328p -P usb -c $(AVRDUDE_PROGRAMMER) \
+    -U lfuse:w:0xFF:m \
+    -U hfuse:w:0x93:m \
+    -U efuse:w:0xFF:m \
+    -U lock:w:0xFF:m

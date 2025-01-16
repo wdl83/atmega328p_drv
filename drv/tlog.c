@@ -1,20 +1,13 @@
+#ifndef TLOG_DISABLE
+
 #include <stdarg.h>
 #include <stddef.h>
-//#include <stdio.h>
-
+// avr-libc
 #include <avr/interrupt.h>
 
 #include "tlog.h"
 #include "util.h"
 
-
-typedef struct
-{
-    char *begin;
-    const char *end;
-    char *cur;
-    uint8_t cntr;
-} tlog_t;
 
 tlog_t tlog_;
 
@@ -29,20 +22,20 @@ void tlog_append(const char *begin, size_t len)
 {
     /* cntr is appended as HEX + 1 space char */
     const uint8_t prefix_len = (sizeof(tlog_.cntr) << 1) + 1;
-    const size_t max_size = tlog_.end - tlog_.begin;
+    const size_t capacity = tlog_.end - tlog_.begin;
 
-    if(max_size < len + prefix_len) return;
+    if(len + prefix_len > capacity) return;
 
     const uint8_t sreg = SREG;
     cli();
 
-    const size_t capacity = tlog_.end - tlog_.cur;
+    const size_t max_len = tlog_.end - tlog_.cur;
 
-    if(capacity < len + prefix_len)
+    if(len + prefix_len > max_len)
     {
         /* fill remaining tlog buffer with zeros */
         *(tlog_.cur - 1) = '\n';
-        memset(tlog_.cur, '\0', capacity);
+        memset(tlog_.cur, '\0', max_len);
         /* wrap around and retry */
         tlog_.cur = tlog_.begin;
     }
@@ -55,52 +48,6 @@ void tlog_append(const char *begin, size_t len)
 
     SREG = sreg;
 }
-#if 0
-void tlog_printf(const char *fmt, ...)
-{
-    const size_t max_size = tlog_.end - tlog_.begin;
-    va_list ap;
-    int len = 0;
-    const uint8_t sreg = SREG;
-    cli();
-    va_start(ap, fmt);
-retry_index:
-    len =
-        snprintf(
-            tlog_.cur,
-            tlog_.end - tlog_.cur,
-            //"\n%03" PRIu8 " % 04" PRIX16 " ",
-            "\n%03" PRIu8 " ",
-            tlog_.cntr/*, diff*/);
-
-    if(tlog_.end - tlog_.cur < len)
-    {
-        /* wrap around and retry */
-        *(tlog_.cur - 1) = '\n';
-        tlog_.cur = tlog_.begin;
-        goto retry_index;
-    }
-    else tlog_.cur += len;
-
-retry_data:
-    len = vsnprintf(tlog_.cur, tlog_.end - tlog_.cur, fmt, ap);
-
-    if(max_size < len) goto exit;
-
-    if(tlog_.end - tlog_.cur < len)
-    {
-        /* wrap around and retry */
-        *(tlog_.cur - 1) = '\n';
-        tlog_.cur = tlog_.begin;
-        goto retry_data;
-    }
-    else tlog_.cur += len;
-exit:
-    va_end(ap);
-    ++tlog_.cntr;
-    SREG = sreg;
-}
-#endif
 
 void tlog_clear(void)
 {
@@ -121,3 +68,5 @@ const char *tlog_end(void)
 {
     return tlog_.end;
 }
+
+#endif /* TLOG_DISABLE */

@@ -12,7 +12,7 @@ TARGETS += $(OBJ_DIR)/$(TARGET).hex
 .PRECIOUS: $(OBJ_DIR)/%.o
 
 ifdef STACK_USAGE
-TARGETS += $(TARGET).stack_usage
+TARGETS += $(OBJ_DIR)/$(TARGET).stack_usage
 endif
 
 all:: $(DST_OBJS) $(TARGETS)
@@ -22,7 +22,7 @@ $(OBJ_DIR)/%.elf: $(DST_OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJ_DIR)/%.stack_usage : $(DST_OBJS)
-	$(AVSTACK) $^ > $*.stack_usage
+	$(AVSTACK) $^ > $@ 
 
 $(OBJ_DIR)/%.o: %.c
 	mkdir -p "$(OBJ_DIR)/`dirname $<`"

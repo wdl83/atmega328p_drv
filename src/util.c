@@ -2,7 +2,7 @@
 
 #include <avr/pgmspace.h>
 
-#include <drv/util.h>
+#include <atmega328p_drv/util.h>
 
 const char lookup16_[] PROGMEM =
 {

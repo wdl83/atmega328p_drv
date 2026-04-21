@@ -2,7 +2,7 @@
 
 #include <avr/interrupt.h>
 
-#include <drv/tmr1.h>
+#include <atmega328p_drv/tmr1.h>
 
 typedef struct
 {

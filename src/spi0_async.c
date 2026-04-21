@@ -3,10 +3,9 @@
 
 #include <avr/interrupt.h>
 
-#include <drv/assert.h>
-#include <drv/spi0.h>
-
-#include <drv/usart0.h>
+#include <atmega328p_drv/assert.h>
+#include <atmega328p_drv/spi0.h>
+#include <atmega328p_drv/usart0.h>
 
 typedef struct
 {

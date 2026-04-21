@@ -4,7 +4,7 @@
 
 #include <avr/wdt.h>
 
-#include <drv/mem.h>
+#include <atmega328p_drv/mem.h>
 
 #define WATCHDOG_TIMEOUT_16ms WDTO_15MS
 #define WATCHDOG_TIMEOUT_32ms WDTO_30MS

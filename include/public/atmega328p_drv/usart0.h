@@ -6,7 +6,7 @@
 
 #include <avr/io.h>
 
-#include <drv/mem.h>
+#include <atmega328p_drv/mem.h>
 
 /*----------------------------------------------------------------------------*/
 #define USART0_TX_ENABLE() UCSR0B |= M1(TXEN0)

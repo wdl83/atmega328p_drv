@@ -5,8 +5,8 @@
 // avr-libc
 #include <avr/interrupt.h>
 
-#include "tlog.h"
-#include "util.h"
+#include <atmega328p_drv/tlog.h>
+#include <atmega328p_drv/util.h>
 
 
 tlog_t tlog_;

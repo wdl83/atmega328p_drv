@@ -3,9 +3,9 @@
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 
-#include <drv/assert.h>
-#include <drv/usart0.h>
-#include <drv/util.h>
+#include <atmega328p_drv/assert.h>
+#include <atmega328p_drv/usart0.h>
+#include <atmega328p_drv/util.h>
 
 /*----------------------------------------------------------------------------*/
 #ifdef USART_DBG_CNTRS

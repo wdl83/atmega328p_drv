@@ -1,3 +1,12 @@
+ifeq ($(DEBUG),1)
+BUILD_TYPE = debug
+else
+BUILD_TYPE = release
+endif
+
+INSTALL_DIR ?= $(PWD)/install_dir/$(BUILD_TYPE)
+BUILD_DIR ?= $(PWD)/build_dir/$(BUILD_TYPE)
+
 CC=avr-gcc
 AS=avr-as
 AR=avr-ar
@@ -11,15 +20,14 @@ CPU_CLK=16000000
 # AVR DRAGON https://www.microchip.com/en-us/development-tool/atavrdragon
 AVRDUDE_PROGRAMMER ?= dragon_isp
 # avstack.pl needs to be placed in PATH
-AVSTACK=avstack.pl
+AVSTACK=scripts/avstack.pl
 
 ASMFLAGS = -mmcu=$(MCU)
 
 #-save-temps
-CFLAGS = \
+FLAGS = \
 	--short-enums \
 	-DCPU_CLK=$(CPU_CLK) \
-	-Os \
 	-Wall \
 	-Wextra \
 	-Wno-parentheses \
@@ -34,7 +42,6 @@ CFLAGS = \
 	-fomit-frame-pointer \
 	-g \
 	-mmcu=$(MCU) \
-	-std=gnu99
 
 LDFLAGS = \
 	-Wl,--cref \
@@ -42,12 +49,17 @@ LDFLAGS = \
 	-Wl,-relax \
 	-mmcu=$(MCU)
 
-OBJCPFLAGS = -j .text -j .fixed -j .data -j .bss
+OBJCP_FLAGS = -j .text -j .fixed -j .data -j .bss
+
+ifeq ($(DEBUG),1)
+	FLAGS += -O1
+else
+	FLAGS += -Os -DASSERT_DISABLE
+endif
+
+CFLAGS = $(FLAGS) -std=gnu11
+CXXFLAGS = $(FLAGS) -std=c++11
 
 ifdef STACK_USAGE
-	CFLAGS += \
-		-fstack-usage
-else
-	CFLAGS += \
-		-flto
+	FLAGS += -fstack-usage
 endif

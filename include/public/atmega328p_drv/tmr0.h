@@ -2,8 +2,8 @@
 
 #include <avr/io.h>
 
-#include <drv/mem.h>
-#include <drv/tmrx.h>
+#include <atmega328p_drv/mem.h>
+#include <atmega328p_drv/tmrx.h>
 
 /* ATmega328P */
 

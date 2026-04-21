@@ -6,7 +6,7 @@
 
 #include <avr/io.h>
 
-#include <drv/mem.h>
+#include <atmega328p_drv/mem.h>
 
 /* SPCR - SPI Control Register */
 #define SPI0_INT_ENABLE() SPCR |= M1(SPIE)

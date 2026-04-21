@@ -1,0 +1,6 @@
+[submodule "modules/utest"]
+	path = modules/utest
+	url = https://github.com/wdl83/utest.h
+[submodule "modules/simavr"]
+	path = modules/simavr
+	url = https://github.com/wdl83/simavr

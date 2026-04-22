@@ -15,6 +15,7 @@ void tlog_init(char *buf, size_t capacity)
     tlog_.begin = buf;
     tlog_.end   = tlog_.begin + capacity - 1;
     tlog_.cur   = tlog_.begin;
+    tlog_.cntr  = 0;
 }
 
 void tlog_append(const char *begin, size_t len)
